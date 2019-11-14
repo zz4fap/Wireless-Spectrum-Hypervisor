@@ -10,9 +10,11 @@ Reference:
 Install gnuradio FROM SOURCE!!!. Now only gnuradio 3.7.10.1 is verified. Newer version may cause issues.
 
 Then:
-``` git clone https://github.com/zz4fap/Wireless-Spectrum-Hypervisor.git
+```
+git clone https://github.com/zz4fap/Wireless-Spectrum-Hypervisor.git
 cd Wireless-Spectrum-Hypervisor
 mkdir build
 cd build
 cmake ../
-make ```
+make
+```
