@@ -1,0 +1,73 @@
+// uses V3.0 of the Protocol Buffer Specification
+syntax = "proto3";
+package aiCommunicator;
+
+enum Query {
+	QUERY_UNKNOWN 			= 0;
+	QUERY_WHO_IS_GATEWAY	= 0x101;
+	QUERY_I_AM_GATEWAY		= 0x102;
+}
+
+message Location {
+    double longitude    = 1;
+    double latitude     = 2;
+    double elevation    = 3;
+}
+
+message InternalVoxel {
+    uint32 timeslot     = 1;
+    uint32 channel      = 2;
+    uint64 dst          = 3;
+    uint64 validitystart = 4;
+    uint32 tx_gain      = 5;
+}
+
+message TXSlotAllocated {
+    uint64 dst          = 1;
+    uint32 timeslot     = 2;
+    uint32 channel      = 3;
+}
+
+message TXSlotRemoved {
+    uint32 timeslot     = 1;
+    uint32 channel      = 2;
+}
+
+message TXGainChanged {
+    uint64 dst          = 1;
+    uint32 gain         = 2;
+}
+
+message NodePerformance {
+    repeated FlowPerformance flows = 1;
+}
+
+message FlowPerformance {
+    uint32 flow_id      = 1;
+    uint32 bps          = 2;
+}
+
+message GatewayReport {
+    uint64 start_timestamp          = 1;
+    uint64 end_timestamp            = 2;
+    Location location               = 3;
+    repeated InternalVoxel slots    = 4;
+    repeated FlowPerformance flows  = 5;
+}
+
+message InternalAI{
+	reserved	107 to 200;
+
+	uint64	statementID		= 1;
+	uint64	mac_address		= 2;
+	int32	nodeIndex		= 3;
+	
+	oneof payload {
+			GatewayReport gw_report     = 101;
+			TXSlotAllocated slot_alloc  = 102;
+			TXSlotRemoved slot_removed  = 103;
+			TXGainChanged gain_changed  = 104;
+			NodePerformance nodeperf    = 105;
+			Query		query			= 202;
+	}
+}
